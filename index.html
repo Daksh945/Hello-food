@@ -44,10 +44,10 @@ footer{background:#1d1917;color:#fff;padding:28px 5vw;display:flex;justify-conte
 </section>
 <div class="strip"><div>🍕 Pizza favourites<small>Classic to loaded</small></div><div>🥤 Cool sips<small>Shakes & mocktails</small></div><div>🧀 Cheesy sides<small>Perfect add-ons</small></div></div>
 <section id="menu">
-<div class="sectionhead"><div><div class="eyebrow">Find your favourite</div><h2>The menu</h2></div><p>Choose your bites, select a size where available, and add them to your cart. Prices shown are transcribed from the menu photo you shared.</p></div>
-<div class="controls"><input id="search" class="search" placeholder="Search pizza, burger, shake..." oninput="renderMenu()"><div id="chips" style="display:flex;gap:8px;flex-wrap:wrap"></div></div>
+<div class="sectionhead"><div><div class="eyebrow">Find your favourite</div><h2>The menu</h2></div><p>The complete menu is displayed below by default. Search any dish name, or choose a category. Select a size where available, then add it to your cart. All names, ingredients and listed prices are transcribed from your menu photo.</p></div>
+<div class="controls"><input id="search" class="search" placeholder="Search pizza, burger, shake..." oninput="active='All';renderChips();renderMenu()"><div id="chips" style="display:flex;gap:8px;flex-wrap:wrap"></div></div>
 <div class="menu-grid" id="menuGrid"></div>
-<div class="note">Menu note: some items in the photo do not have a clearly readable individual price or size. Those are marked “Price to confirm” and cannot be added to the cart until the restaurant confirms the price. Prices may change; please confirm before payment.</div>
+<div class="note">Menu note: the printed menu groups prices by section for several pizza varieties, so those shared prices are applied to each item in that group. Items marked MRP have no fixed printed price. Confirm current prices and availability with the restaurant before ordering.</div>
 </section>
 <section class="about" id="about">
 <div><div class="eyebrow">Hello, food lovers</div><h2>Good times start with good food.</h2><p>Hello Food is a pizza and fast-food spot in Mansa, Punjab. Pick your favourites for a casual meal, a snack break or a little treat with friends.</p><p><b>Listed hours:</b> 10:00 AM – 10:30 PM (confirm by phone before visiting).</p></div>
@@ -68,18 +68,18 @@ footer{background:#1d1917;color:#fff;padding:28px 5vw;display:flex;justify-conte
 const menu=[
 ["Margherita Pizza","Pizza", "Classic single-cheese pizza with a simple, cheesy topping.",{Small:100,Medium:210,Large:300}],
 ["Cheese Tomato Pizza","Pizza","Cheese and fresh tomato on a pizza base.",{Small:130,Medium:260,Large:360}],
-["Cheese Corn Pizza","Pizza","Cheese with sweet corn for a mild, sweet-and-savoury bite.",null],
-["Cheese Capsicum Pizza","Pizza","Cheese and fresh capsicum for a crisp, savoury topping.",null],
-["Cheese & Mushroom Pizza","Pizza","Cheese paired with mushroom pieces.",null],
+["Cheese Corn Pizza","Pizza","Cheese with sweet corn for a mild, sweet-and-savoury bite.",{Small:130,Medium:260,Large:360}],
+["Cheese Capsicum Pizza","Pizza","Cheese and fresh capsicum for a crisp, savoury topping.",{Small:130,Medium:260,Large:360}],
+["Cheese & Mushroom Pizza","Pizza","Cheese paired with mushroom pieces.",{Small:130,Medium:260,Large:360}],
 ["Green Pizza","Pizza","Onion, capsicum and tomato.",{Small:170,Medium:320,Large:460}],
-["Fresh House Pizza","Pizza","Onion, capsicum, tomato and mushroom.",null],
-["Chilly Paneer Pizza","Pizza","Capsicum, red paprika and paneer.",null],
-["Golden Pizza","Pizza","Pineapple, corn and gherkin.",null],
+["Fresh House Pizza","Pizza","Onion, capsicum, tomato and mushroom.",{Small:170,Medium:320,Large:460}],
+["Chilly Paneer Pizza","Pizza","Capsicum, red paprika and paneer.",{Small:170,Medium:320,Large:460}],
+["Golden Pizza","Pizza","Pineapple, corn and gherkin.",{Small:170,Medium:320,Large:460}],
 ["Deluxe Pizza","Pizza","Onion, capsicum, mushroom, corn and paneer.",{Small:200,Medium:370,Large:540}],
-["Mexicana Pizza","Pizza","Onion, capsicum, mushroom, jalapeño and black olives.",null],
-["Gourmet Pizza","Pizza","Jalapeño, black olives, corn, gherkin and extra cheese.",null],
-["Spicy Pizza","Pizza","Jalapeño, paneer, red paprika, green chilli and spicy sauce.",null],
-["Tandoori Paneer Pizza","Pizza","Onion, capsicum, red paprika, paneer and tandoori sauce.",null],
+["Mexicana Pizza","Pizza","Onion, capsicum, mushroom, jalapeño and black olives.",{Small:200,Medium:370,Large:540}],
+["Gourmet Pizza","Pizza","Jalapeño, black olives, corn, gherkin and extra cheese.",{Small:200,Medium:370,Large:540}],
+["Spicy Pizza","Pizza","Jalapeño, paneer, red paprika, green chilli and spicy sauce.",{Small:200,Medium:370,Large:540}],
+["Tandoori Paneer Pizza","Pizza","Onion, capsicum, red paprika, paneer and tandoori sauce.",{Small:200,Medium:370,Large:540}],
 ["Multi Veg Pizza","Pizza","Onion, capsicum, tomato, mushroom, corn, black olives, jalapeño and extra cheese.",{Small:230,Medium:460,Large:640}],
 ["Soya Single Topping Pizza","Pizza Mania","Single topping: soya.",{Regular:59}],
 ["Onion Single Topping Pizza","Pizza Mania","Single topping: onion.",{Regular:70}],
@@ -108,10 +108,10 @@ const menu=[
 ["Coke (300 ml glass)","Drinks","Coca-Cola served in a 300 ml glass.",{Regular:35}],
 ["Sprite (300 ml glass)","Drinks","Sprite served in a 300 ml glass.",{Regular:35}],
 ["Fresh Lemon","Drinks","A fresh lemon drink.",{Regular:50}],
-["Mineral Water","Drinks","Bottled mineral water. Price as marked by restaurant.",null],
-["Fruit Beer","Drinks","Fruit-flavoured non-alcoholic style beverage; price to confirm.",null],
-["Coke & Sprite Can","Drinks","Canned Coke or Sprite; price to confirm.",null],
-["Juice Can","Drinks","Canned juice; price to confirm.",null],
+["Mineral Water","Drinks","Bottled mineral water. Price is MRP as printed on the menu.",null],
+["Fruit Beer","Drinks","Fruit beer; price is MRP as printed on the menu.",null],
+["Coke & Sprite Can","Drinks","Canned Coke or Sprite; price is MRP as printed on the menu.",null],
+["Juice Can","Drinks","Canned juice; price is MRP as printed on the menu.",null],
 ["Veg Roll","Rolls","A vegetable-filled roll.",{Regular:90}],
 ["Hot Coffee (Cappuccino)","Coffee","Hot cappuccino-style coffee.",{Regular:60}],
 ["Hot Coffee (Mochaccino)","Coffee","Hot mochaccino-style coffee.",{Regular:70}],
@@ -146,11 +146,4 @@ const menu=[
 ["French Fries","Fries","Classic crispy french fries.",{Regular:70}],
 ["Peri Peri Fries","Fries","Fries tossed in peri-peri seasoning.",{Regular:80}],
 ["Cheesy Fries","Fries","Fries topped with cheese.",{Regular:90}],
-["Cheesy & Saucy Wrap","Wraps","A wrap with cheese and sauce.",{Regular:100}],
-["Paneer Wrap","Wraps","A wrap filled with paneer.",{Regular:120}],
-["Veg Delight Salad","Salads","A vegetable salad.",{Regular:130}],
-["Paneer Salad","Salads","A salad with paneer.",{Regular:150}],
-["American Veg Salad","Salads","An American-style vegetarian salad.",{Regular:180}],
-["Lava Cake","Sides","A chocolate lava cake-style dessert.",{Regular:70}],
-["Cheesy Dip","Sides","Cheese dip for sides.",{Regular:30}],
-["Spicy Dip","Sides","
+["Cheesy & Saucy Wrap","Wraps","A wrap with cheese and sauce.",{Regular:100}]
